@@ -110,3 +110,7 @@ $ docker exec -it $(docker ps -qf "name=node-docker") /bin/bash
 # Install or remove dependencies
 $ docker exec -it $(docker ps -qf "name=node-docker") yarn add body-parser
 ```
+
+## Credit
+
+The above was paraphrased and edited for my use from the great guide https://auth0.com/blog/use-docker-to-create-a-node-development-environment/ by Dan Arias! Thank you for all of this great info!
