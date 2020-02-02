@@ -86,7 +86,7 @@ $ docker ps -a
 
 So `docker-compose up` starts a _"full service composition"_. It, by default, will only present container logs to the terminal it's executed in. We of course want more interactive input with our "service", so now:
 
-`$ docker-compose run --rm --service-ports nod_dev_env`
+`$ docker-compose run --rm --service-ports node-dev-env`
 
 This command acts like `docker run -it`. The `--service-ports` flag tells docker compose to use the port mappings in the docker-compose.yml.
 

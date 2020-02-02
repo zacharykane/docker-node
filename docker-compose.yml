@@ -1,8 +1,8 @@
 version: '3'
 services:
-    nod_dev_env:
+    node-dev-env:
         build: .
-        container_name: node-docker
+        container_name: a-node-dev-env
         ports:
             - 8080:3000
         volumes:
