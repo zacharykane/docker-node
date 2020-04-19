@@ -1,16 +1,16 @@
-# Use Docker to create a simple Node server!
+# Use Docker to create a simple Node server (and development environment)!
 
 We'll need to:
 
-Mount a local folder to the container filesystem: Using this mount point as your container working directory, you'll persist locally any files created within the container and you'll make the container aware of any local changes made to project files.
+_Mount a local folder to the container filesystem_: Using this mount point as your container working directory, you'll persist locally any files created within the container and you'll make the container aware of any local changes made to project files.
 
-Allow the host to interact with the container network: By mapping a local port to a container port, any HTTP requests made to the local port will be redirected by Docker to the container port.
+_Allow the host to interact with the container network_: By mapping a local port to a container port, any HTTP requests made to the local port will be redirected by Docker to the container port.
 
 We can use a few components of Docker to achieve these!
 
 ## Dockerfile
 
-this defines our base image (os our server is based on and the environment it sets up with) along with our starting command (or entrypoint).
+this defines our base image (the os our server is based on and the environment it sets up with) along with our starting command (or entrypoint).
 
 ## docker-compose.yml
 
@@ -56,20 +56,20 @@ However we can still do better. We can define our name, port and disk mappings w
 ```yml
 version: '3'
 services:
-    nod_dev_env:
+    node-dev-env:
         build: .
-        container_name: node-docker
+        container_name: a-node-dev-env
         ports:
             - 8080:3000
         volumes:
             - ./:/home/app
 ```
 
--   `nod_dev_env` gives the service a name to easily identify it
+-   `node-dev-env` gives the _service_ a name to easily identify it
 -   `build` specifies the path to the Dockerfile
--   `container_name` provides a friendly name to the container
+-   `container_name` provides a friendly name to the _container_
 -   `ports` configures host-to-container port mapping
--   `volumes` defines the mounting point of a local folder into a container folder
+-   `volumes` defines the mounting point of a local folder into a container folder; here our current directory `./` locally to the absolute directory `/home/app` in our soon to be container
 
 Now we can simply run:
 
@@ -79,14 +79,17 @@ up builds its own images and containers _separate_ from those created by the doc
 
 ```bash
 $ docker image
-# Notice the image named <project-folder>_nod_dev_env
+# Notice the image named <project-folder>_node-dev-env
 $ docker ps -a
-# Notice the container named <project-folder>_nod_dev_env_<number>
+# Notice the container named <project-folder>_node-dev-env_<number>
 ```
 
 So `docker-compose up` starts a _"full service composition"_. It, by default, will only present container logs to the terminal it's executed in. We of course want more interactive input with our "service", so now:
 
-`$ docker-compose run --rm --service-ports node-dev-env`
+```bash
+$ docker-compose down # to stop the currently isolated running container from 'up'
+$ docker-compose run --rm --service-ports node-dev-env
+```
 
 This command acts like `docker run -it`. The `--service-ports` flag tells docker compose to use the port mappings in the docker-compose.yml.
 
@@ -107,7 +110,7 @@ Once we have that, we can use exec to execute commands within our container:
 ```bash
 # Open a new instance of the running container shell
 $ docker exec -it $(docker ps -qf "name=node-docker") /bin/bash
-# Install or remove dependencies
+# Install or remove dependencies, since we're executing "in" the container where yarn is available
 $ docker exec -it $(docker ps -qf "name=node-docker") yarn add body-parser
 ```
 
