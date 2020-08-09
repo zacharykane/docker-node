@@ -21,9 +21,9 @@ Docker Compose allows us to compose multiple containers together. We can also ta
 We can do it all with one long docker run command, but it can be hard to follow and just a pain to remember/type out.
 
 ```bash
-$ docker run --rm -it --name node-docker \
+$ docker run --rm -it --name a-node-dev-env \
 -v $PWD:/home/app -w /home/app \
--e "PORT=3000" -p 8080:3000  \
+-e "PORT=3000" -p 8080:1995  \
 -u node node:latest /bin/bash
 ```
 
@@ -45,7 +45,7 @@ Now, we can use a slightly shorter `docker run` command:
 
 ```bash
 $ docker run --rm -it --name node-docker \
--v $PWD:/home/app -p 8080:3000 \
+-v $PWD:/home/app -p 8080:1995 \
 node-docker
 ```
 
@@ -60,7 +60,7 @@ services:
         build: .
         container_name: a-node-dev-env
         ports:
-            - 8080:3000
+            - 8080:1995
         volumes:
             - ./:/home/app
 ```
